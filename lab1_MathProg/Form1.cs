@@ -259,6 +259,12 @@ namespace lab1_MathProg
         private void Mmetod()
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ConvertFromObshtoKan convertFromObshtoKan = new ConvertFromObshtoKan();
+            convertFromObshtoKan.Show();
+        }
     }
-}
 }
