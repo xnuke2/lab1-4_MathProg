@@ -51,7 +51,7 @@ namespace lab1_MathProg
             int columns = Convert.ToInt32(dataGridViewConditions.Columns.Count) - 1;
             int rows = Convert.ToInt32(dataGridViewConditions.Rows.Count);
 
-                dataGridViewRezult.Columns.Add("Xk", "Xk");
+            dataGridViewRezult.Columns.Add("Xk", "Xk");
             for (int i = 0; i < columns - 1; i++)
             {
                 dataGridViewRezult.Columns.Add("x" + (i + 1), "x" + (i + 1));
@@ -141,10 +141,10 @@ namespace lab1_MathProg
                     for (int i = 0; i < rows - 1; i++)
                     {
                         dataGridViewRezult.Rows.Add("x" + (baseNames[i] + 1));
-
+                        
                     }
                     dataGridViewRezult.Rows.Add("Z");
-
+                    
 
                     for (int i = 0; i < rows; i++)
                         for (int j = 0; j < columns; j++)
@@ -163,7 +163,7 @@ namespace lab1_MathProg
                     dataGridViewAnswer.Columns.Add("b", "Z");
                     dataGridViewAnswer.Rows.Add();
                     for (int i = 0; i < rows - 1; i++)
-                        dataGridViewAnswer[i, 0].Value = 0;
+                       dataGridViewAnswer[i, 0].Value = 0;
 
                     for (int i = 0; i < rows - 1; i++)
                     {
@@ -172,7 +172,7 @@ namespace lab1_MathProg
                     }
                     dataGridViewAnswer[rows - 1, 0].Value = matrix[rows - 1, columns - 1];
                     dataGridViewAnswer.Rows.Add();
-
+                    
                     for (int j = 0; j < rows-1; j++)
                     {
                         for (int k = 0; k < rows - 1; k++)
@@ -227,14 +227,14 @@ namespace lab1_MathProg
                     {
                         dataGridViewRezult[+j + 1, rowIndGL + i].Value = matrix[i, j];
                     }
-
+                
                 for (int i = 0; i < rows; i++)
                     dataGridViewRezult[indMin + 1, rowIndGL + i].Style = styleGreen;
                 for (int j = 0; j < columns + 1; j++)
                     dataGridViewRezult[j + 1, rowIndGL + indSimRel].Style = styleRed;
                 dataGridViewRezult.Rows.Add();
                 rowIndGL += rows + 1;
-
+                
                 //переход к следующему решению
                 baseNames[indSimRel] = indMin;
                 double tmp = matrix[indSimRel, indMin];
@@ -259,6 +259,6 @@ namespace lab1_MathProg
         private void Mmetod()
         {
 
-        }
     }
+}
 }
