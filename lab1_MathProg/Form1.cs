@@ -44,6 +44,11 @@ namespace lab1_MathProg
 
         private void buttonCulculate_Click(object sender, EventArgs e)
         {
+            if ( dataGridViewConditions.Columns.Count == 0) { MessageBox.Show("Не введены данные"); return; }
+            for (int i = 0; i < dataGridViewConditions.ColumnCount; i++)
+                for (int j = 0; j < dataGridViewConditions.RowCount; j++)
+                    if (Convert.ToString(dataGridViewConditions[i, j].Value) == "") { MessageBox.Show("Не должно быть незаполненныйх полей"); return; }
+
             dataGridViewRezult.Rows.Clear();
             dataGridViewRezult.Columns.Clear();
             
@@ -51,13 +56,7 @@ namespace lab1_MathProg
             int columns = Convert.ToInt32(dataGridViewConditions.Columns.Count) - 1;
             int rows = Convert.ToInt32(dataGridViewConditions.Rows.Count);
 
-            dataGridViewRezult.Columns.Add("Xk", "Xk");
-            for (int i = 0; i < columns - 1; i++)
-            {
-                dataGridViewRezult.Columns.Add("x" + (i + 1), "x" + (i + 1));
-            }
-            dataGridViewRezult.Columns.Add("b", "b");
-            dataGridViewRezult.Columns.Add("s", "s");
+
             
             int[] baseNames = new int[rows];
             for (int i = 0; i < rows-1; i++)
@@ -76,7 +75,7 @@ namespace lab1_MathProg
             int ch = 0;
             for (int i = 0; i < rows; i++)
             {
-                if (matrix[i, columns-1] < 0)
+                if (matrix[i, columns - 1] < 0)
                 {
                     dataGridViewAnswer.Rows.Clear();
                     dataGridViewAnswer.Columns.Clear();
@@ -88,29 +87,73 @@ namespace lab1_MathProg
 
 
             ch = 0;
-            for(int i = 0; i < columns; i++)
+            for (int i = 0; i < columns; i++)
             {
-                for(int j = 0; j < rows; j++)
+                for (int j = 0; j < rows; j++)
                     if (matrix[j, i] == 1)
                     {
                         ch++;
                         for (int k = 0; k < rows; k++)
                         {
-                            if (matrix[k, i] != 0&&k!=j)
+                            if (matrix[k, i] != 0 && k != j)
                             {
                                 ch--;
-                                break; 
+                                break;
                             }
-                        } 
-                    }  
+                        }
+                    }
 
             }
-            if (ch != baseNames.Length-1) Mmetod();
+            if (ch != baseNames.Length - 1)
+            {
+                string[] newBaseName =new string[baseNames.Length+1];
+                for(int i = 0;i < baseNames.Length-1; i++)
+                {
+                    newBaseName[i] ="Y" + (i + 1);
+                }
+                newBaseName[baseNames.Length-1] = "Z";
+                newBaseName[baseNames.Length] = "Z";
+                double[,] newMatrix = new double[rows+1,columns+rows-1];
+                for(int i = 0; i < columns - 1; i++)
+                {
+                    for(int j = 0;j < rows; j++)
+                    {
+                        newMatrix[j,i] = matrix[j,i];
+                    }
+                }
+                for (int j = 0; j < rows; j++)
+                {
+                    newMatrix[j, columns + rows-2] = matrix[j, columns - 1];
+                }
+                for(int j = columns - 1; j< columns + rows-2; j++)
+                {
+                    newMatrix[j - columns + 1, j] = 1;
+                }
+                for (int i = 0; i < columns - 1; i++)
+                {
+                    for (int j = 0; j < rows-1; j++)
+                    {
+                        newMatrix[rows, i] -= matrix[j, i];
+                    }
+                }
+                //for (int j = 0; j < rows; j++)
+                //{
+                //    newMatrix[rows, columns + rows - 2] -= matrix[j, columns  - 1];
+                //}
+                Mmetod(columns + rows-1, rows + 1, newBaseName, newMatrix);
+            } 
             else simplex(columns, rows, baseNames, matrix);
 
         }
         private void simplex(int columns, int rows, int[] baseNames, double[,] matrix)
         {
+            dataGridViewRezult.Columns.Add("Xk", "Xk");
+            for (int i = 0; i < columns - 1; i++)
+            {
+                dataGridViewRezult.Columns.Add("x" + (i + 1), "x" + (i + 1));
+            }
+            dataGridViewRezult.Columns.Add("b", "b");
+            dataGridViewRezult.Columns.Add("s", "s");
             int rowIndGL = 0;
             DataGridViewCellStyle styleGreen = new DataGridViewCellStyle();
             styleGreen.BackColor = Color.Green;
@@ -256,15 +299,211 @@ namespace lab1_MathProg
 
             }
         }
-        private void Mmetod()
+        private void Mmetod(int columns, int rows, string[] baseNames, double[,] matrix)
         {
+            dataGridViewRezult.Rows.Clear();
+            dataGridViewRezult.Columns.Clear();
+            rowIndGL = 0;
+            DataGridViewCellStyle styleGreen = new DataGridViewCellStyle();
+            styleGreen.BackColor = Color.Green;
+            styleGreen.ForeColor = Color.Black;
+            //row.Cells[color.Index].Style = style;
+            DataGridViewCellStyle styleRed = new DataGridViewCellStyle();
+            styleRed.BackColor = Color.Red;
+            styleRed.ForeColor = Color.Black;
+            dataGridViewRezult.Columns.Add("Basis", "Базис");
+            for (int i=0; i<columns-rows+1; i++)
+                dataGridViewRezult.Columns.Add("X" + (i + 1), "X" + (i + 1));
+            for (int i = 0; i < columns - (columns - rows + 2); i++)
+                dataGridViewRezult.Columns.Add("Y" + (i + 1), "Y" + (i + 1));
+            dataGridViewRezult.Columns.Add("B","B" );
+            dataGridViewRezult.Columns.Add("Si", "Si");
+            bool noZero = true;
+            List<int> deletedColumnsIndex  =new List<int>();
+            while (true)
+            {
+                if (noZero)
+                {
+                    int chI;
+                    for (chI = 0; chI < columns-3; chI++)
+                        if (Math.Abs(matrix[rows - 1, chI])> 1E-10 ) break;
+                    if (chI == columns-3) noZero = false;
+                }
+                
+                if (noZero)
+                    for (int i = 0; i < rows; i++)
+                    {
+                        dataGridViewRezult.Rows.Add(baseNames[i]);
+
+                        for (int j = 0; j < columns; j++)
+                        {
+                            if (deletedColumnsIndex.Contains(j))
+                                dataGridViewRezult[j + 1, rowIndGL].Value = "-";
+                            else
+                                dataGridViewRezult[j + 1, rowIndGL].Value = matrix[i, j];
+                        }
+                        rowIndGL++;
+
+                    }
+                else
+                {
+                    for (int i = 0; i < rows - 1; i++)
+                    {
+                        dataGridViewRezult.Rows.Add(baseNames[i]);
+
+                        for (int j = 0; j < columns; j++)
+                        {
+                            if (deletedColumnsIndex.Contains(j))
+                                dataGridViewRezult[j + 1, rowIndGL].Value = "-";
+                            else
+                                dataGridViewRezult[j + 1, rowIndGL].Value = matrix[i, j];
+                        }
+                        rowIndGL++;
+                    }
+
+                    dataGridViewRezult.Rows.Add(baseNames[rows-1]);
+                    for (int j = 0; j < columns; j++)
+                        dataGridViewRezult[j + 1, rowIndGL].Value = "-";
+                    rowIndGL++;
+                }
+
+                //int countZero;
+                //for (countZero = 0; countZero < columns; countZero++)
+                //    if (matrix[rows - 2, countZero] != 0) break;
+                ////нахождение ответа
+                //if (countZero == columns)
+                //{
+                //    return;
+                //}
+                double min = double.MaxValue;
+                int indexMinColumns = -1;
+                for (int i = 0; i < columns-3; i++)
+                    if(noZero)
+                    {                        
+                        if (matrix[rows - 1, i] < min)
+                        {
+                            min = matrix[rows - 1, i];
+                            indexMinColumns = i;
+                        }
+                    }
+                    else
+                        if (matrix[rows - 2, i] < min)
+                        {
+                            min = matrix[rows - 2, i];
+                            indexMinColumns = i;
+                        }
+                if (min >= 0)
+                {
+                    //найдено решение
+                    dataGridViewAnswer.Rows.Clear();
+                    dataGridViewAnswer.Columns.Clear();
+                    for (int i = 0; i < columns - 3; i++)
+                    {
+                        dataGridViewAnswer.Columns.Add("X" + (i + 1), "X" + (i + 1));
+                    }
+                    dataGridViewAnswer.Columns.Add("Zmax", "Zmax" );
+                    for (int i = 0; i < dataGridViewAnswer.ColumnCount; i++)
+                    {
+                        dataGridViewAnswer[i, 0].Value = 0;
+                        for (int j = 0; j < baseNames.Length-2;j++)
+                            if (dataGridViewAnswer.Columns[i].HeaderText == baseNames[j]) dataGridViewAnswer[i,0].Value=matrix[j,columns-1];
+
+                    }
+                    dataGridViewAnswer[dataGridViewAnswer.ColumnCount - 1, 0].Value = matrix[rows - 2, columns - 1];
+                    return;
+                }
+                for(int i = 0;i<rows; i++)
+                    dataGridViewRezult[indexMinColumns+1, rowIndGL - rows +i].Style =styleGreen;
+                double[] Si = new double[rows];
+                for(int i = 0;i< rows; i++)
+                    if (matrix[i, columns - 1] > 0&& matrix[i, indexMinColumns] > 0) 
+                    { 
+                        Si[i] = matrix[i, columns - 1] / matrix[i, indexMinColumns];
+                        dataGridViewRezult[dataGridViewRezult.ColumnCount - 1, rowIndGL-rows + i].Value =Si[i];
+                    }
+
+                min =double.MaxValue;
+                int indexMinRows = -1;
+                for (int i = 0; i < rows-2; i++)
+                    if (min > Si[i] && Si[i]!=0)
+                    { 
+                        min = Si[i];
+                        indexMinRows = i;
+                    }
+
+                for (int i = 0; i < dataGridViewRezult.ColumnCount; i++)
+                    dataGridViewRezult[i, rowIndGL - rows + indexMinRows].Style = styleRed;
+                double ratio = matrix[indexMinRows, indexMinColumns];
+                for (int i = 0;i<columns; i++)
+                {
+                    matrix[indexMinRows,i] /=ratio;
+                }
+                for (int i = 0; i < rows; i++)
+                    if (i != indexMinRows)
+                    {
+                        double rat = matrix[i, indexMinColumns];
+                        for (int j = 0; j < columns; j++)
+                        {
+                            matrix[i, j] -= rat * matrix[indexMinRows, j];
+                            if (matrix[i, j] < -1E16) matrix[i, j] = 0;
+                        }
+                            
+                    }
+
+
+                for (int i = 0;i<dataGridViewRezult.Columns.Count; i++)
+                    if (dataGridViewRezult.Columns[i].HeaderText == baseNames[indexMinRows] && baseNames[indexMinRows].Contains("Y")) 
+                    {
+                        deletedColumnsIndex.Add(i - 1);
+                        break; 
+                    }
+                baseNames[indexMinRows] = "X" + (indexMinColumns + 1);
+                dataGridViewRezult.Rows.Add();
+                rowIndGL++;
+            }
+
+
+                    
+
 
         }
+        int rowIndGL = 0;
 
+        double TruncateToSignificantDigits( double d, int digits)
+        {
+            if (d == 0)
+                return 0;
+
+            double scale = Math.Pow(10, Math.Floor(Math.Log10(Math.Abs(d))) + 1 - digits);
+            return scale * Math.Truncate(d / scale);
+        }
         private void button1_Click(object sender, EventArgs e)
         {
-            ConvertFromObshtoKan convertFromObshtoKan = new ConvertFromObshtoKan();
-            convertFromObshtoKan.Show();
+            using (var form = new ConvertFromObshtoKan())
+            {
+                var result = form.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    List<string> varNames = form.ReturnValue1;            //values preserved after close
+                    double[,] ratio = form.ReturnValue2;
+                    dataGridViewConditions.Rows.Clear();
+                    dataGridViewConditions.Columns.Clear();
+                    dataGridViewConditions.Columns.Add("xk", "Xk");
+                    for (int i = 0;i< varNames.Count;i++)
+                        dataGridViewConditions.Columns.Add(varNames[i], varNames[i]);
+                    int indexOfNameRows = ratio.GetLength(1) - ratio.GetLength(0);
+                    for (int i = 0; i < ratio.GetLength(0); i++)
+                    {
+                        dataGridViewConditions.Rows.Add();
+                        dataGridViewConditions[0, i].Value = varNames[indexOfNameRows++];
+                        for (int j = 0;j< ratio.GetLength(1); j++)
+                            dataGridViewConditions[j + 1, i].Value = ratio[i,j];
+                    }
+                    
+                    dataGridViewConditions[0, dataGridViewConditions.Rows.Count - 1].Value = "Z";
+
+                }
+            }
         }
     }
 }
