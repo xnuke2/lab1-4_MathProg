@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.numericUpDownLiberty = new System.Windows.Forms.NumericUpDown();
             this.numericUpDownBase = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownOgr = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dataGridViewConditions = new System.Windows.Forms.DataGridView();
@@ -41,8 +41,8 @@
             this.dataGridViewRezult = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dataGridViewAnswer = new System.Windows.Forms.DataGridView();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLiberty)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBase)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOgr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewConditions)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -51,30 +51,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAnswer)).BeginInit();
             this.SuspendLayout();
             // 
-            // numericUpDownLiberty
-            // 
-            this.numericUpDownLiberty.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDownLiberty.Location = new System.Drawing.Point(232, 28);
-            this.numericUpDownLiberty.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numericUpDownLiberty.Name = "numericUpDownLiberty";
-            this.numericUpDownLiberty.Size = new System.Drawing.Size(102, 20);
-            this.numericUpDownLiberty.TabIndex = 0;
-            this.numericUpDownLiberty.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
             // numericUpDownBase
             // 
             this.numericUpDownBase.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.numericUpDownBase.Location = new System.Drawing.Point(232, 56);
+            this.numericUpDownBase.Location = new System.Drawing.Point(232, 28);
             this.numericUpDownBase.Minimum = new decimal(new int[] {
             1,
             0,
@@ -82,8 +63,27 @@
             0});
             this.numericUpDownBase.Name = "numericUpDownBase";
             this.numericUpDownBase.Size = new System.Drawing.Size(102, 20);
-            this.numericUpDownBase.TabIndex = 1;
+            this.numericUpDownBase.TabIndex = 0;
             this.numericUpDownBase.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownOgr
+            // 
+            this.numericUpDownOgr.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.numericUpDownOgr.Location = new System.Drawing.Point(232, 56);
+            this.numericUpDownOgr.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownOgr.Name = "numericUpDownOgr";
+            this.numericUpDownOgr.Size = new System.Drawing.Size(102, 20);
+            this.numericUpDownOgr.TabIndex = 1;
+            this.numericUpDownOgr.Value = new decimal(new int[] {
             1,
             0,
             0,
@@ -94,18 +94,18 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(17, 30);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(190, 13);
+            this.label1.Size = new System.Drawing.Size(178, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Количество свободных переменных";
+            this.label1.Text = "Количество базовых переменных";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(17, 56);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(178, 13);
+            this.label2.Size = new System.Drawing.Size(199, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Количество базовых переменных";
+            this.label2.Text = "Количество ограничивающих условий";
             // 
             // dataGridViewConditions
             // 
@@ -141,8 +141,8 @@
             this.groupBox1.Controls.Add(this.buttonCulculate);
             this.groupBox1.Controls.Add(this.buttonCreatetableToConditions);
             this.groupBox1.Controls.Add(this.dataGridViewConditions);
-            this.groupBox1.Controls.Add(this.numericUpDownLiberty);
             this.groupBox1.Controls.Add(this.numericUpDownBase);
+            this.groupBox1.Controls.Add(this.numericUpDownOgr);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(15, 12);
@@ -215,11 +215,13 @@
             // 
             // dataGridViewAnswer
             // 
+            this.dataGridViewAnswer.AllowUserToAddRows = false;
             this.dataGridViewAnswer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewAnswer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewAnswer.Location = new System.Drawing.Point(6, 19);
             this.dataGridViewAnswer.Name = "dataGridViewAnswer";
+            this.dataGridViewAnswer.RowHeadersVisible = false;
             this.dataGridViewAnswer.RowHeadersWidth = 51;
             this.dataGridViewAnswer.Size = new System.Drawing.Size(565, 74);
             this.dataGridViewAnswer.TabIndex = 2;
@@ -234,8 +236,8 @@
             this.Controls.Add(this.groupBox1);
             this.Name = "Form1";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLiberty)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBase)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOgr)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewConditions)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -249,8 +251,8 @@
 
         #endregion
 
-        private System.Windows.Forms.NumericUpDown numericUpDownLiberty;
         private System.Windows.Forms.NumericUpDown numericUpDownBase;
+        private System.Windows.Forms.NumericUpDown numericUpDownOgr;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dataGridViewConditions;
