@@ -286,7 +286,12 @@ namespace lab1_MathProg
                 }
                 if (min >= 0)
                 {
-
+                    dataGridViewRezult.Rows.Add("Xk");
+                    for (int i = 0; i < columns - 1; i++)
+                    {
+                        dataGridViewRezult[i + 1,rowIndGL].Value= ("x" + (i + 1));
+                    }
+                    dataGridViewRezult[columns,rowIndGL++].Value = "b";
                     //сохранение итерации
                     for (int i = 0; i < rows - 1; i++)
                     {
@@ -369,6 +374,14 @@ namespace lab1_MathProg
                         min = simRel[i];
                         indSimRel = i;
                     }
+                //вывод заголовков
+                dataGridViewRezult.Rows.Add("Xk");
+                for (int i = 0; i < columns - 1; i++)
+                {
+                    dataGridViewRezult[i + 1, rowIndGL].Value = ("x" + (i + 1));
+                }
+                dataGridViewRezult[columns, rowIndGL].Value = "b";
+                dataGridViewRezult[columns + 1, rowIndGL++].Value = "s";
                 //сохранение итерации
                 for (int i = 0; i < rows - 1; i++)
                 {
@@ -590,6 +603,14 @@ namespace lab1_MathProg
             DataGridViewCellStyle styleRed = new DataGridViewCellStyle();
             styleRed.BackColor = Color.Red;
             styleRed.ForeColor = Color.Black;
+            //вывод заголовков
+            dataGridViewRezult.Rows.Add("Xk");
+            for (int i = 0; i < columns - 1; i++)
+            {
+                dataGridViewRezult[i + 1, rowIndGL].Value = ("x" + (i + 1));
+            }
+            dataGridViewRezult[columns, rowIndGL++].Value = "b";
+
             for (int i = 0; i < rows - 1; i++)
             {
                 dataGridViewRezult.Rows.Add("x" + (baseNames[i] + 1));
