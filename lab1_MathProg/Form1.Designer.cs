@@ -41,6 +41,7 @@
             this.dataGridViewRezult = new System.Windows.Forms.DataGridView();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dataGridViewAnswer = new System.Windows.Forms.DataGridView();
+            this.checkBoxint = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBase)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownOgr)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewConditions)).BeginInit();
@@ -137,6 +138,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.checkBoxint);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.buttonCulculate);
             this.groupBox1.Controls.Add(this.buttonCreatetableToConditions);
@@ -226,6 +228,16 @@
             this.dataGridViewAnswer.Size = new System.Drawing.Size(565, 74);
             this.dataGridViewAnswer.TabIndex = 2;
             // 
+            // checkBoxint
+            // 
+            this.checkBoxint.AutoSize = true;
+            this.checkBoxint.Location = new System.Drawing.Point(293, 263);
+            this.checkBoxint.Name = "checkBoxint";
+            this.checkBoxint.Size = new System.Drawing.Size(152, 17);
+            this.checkBoxint.TabIndex = 9;
+            this.checkBoxint.Text = "Целочисленное решение";
+            this.checkBoxint.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -264,6 +276,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.DataGridView dataGridViewAnswer;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox checkBoxint;
     }
 }
 
